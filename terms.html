@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms of Service — Marketiq</title>
+  <meta name="description" content="Marketiq terms of service — free and Pro accounts, affiliate disclosure, price accuracy, limitation of liability." />
+  <meta name="theme-color" content="#FAFAF7" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Geist:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #FAFAF7;
+      --chip:      #F1EFE8;
+      --ink:       #15140F;
+      --ink-soft:  #5C5A52;
+      --ink-mute:  #9A968B;
+      --accent:    #1F8A5B;
+      --line:      rgba(20,18,12,0.07);
+      --line-firm: rgba(20,18,12,0.18);
+      --serif:     'Fraunces', ui-serif, Georgia, serif;
+      --sans:      'Geist', system-ui, -apple-system, sans-serif;
+      --mono:      'JetBrains Mono', ui-monospace, Menlo, monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    body::before {
+      content:'';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.5;
+      mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.08, 0 0 0 0 0.08, 0 0 0 0 0.06, 0 0 0 0.045 0'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>");
+    }
+
+    a { color: var(--accent); text-decoration: none; border-bottom: 1px solid currentColor; transition: opacity .2s; }
+    a:hover { opacity: 0.7; }
+
+    nav.top {
+      position: sticky;
+      top: 0;
+      z-index: 90;
+      padding: 18px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(250,250,247,0.85);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+    }
+    .brand {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: 1.4rem;
+      letter-spacing: -0.02em;
+      font-variation-settings: 'opsz' 144;
+      color: var(--ink);
+    }
+    .brand a { color: inherit; text-decoration: none; border: none; }
+    .brand em { font-style: italic; color: var(--accent); font-weight: 400; }
+    .back {
+      font-size: 0.84rem;
+      color: var(--ink-soft);
+      font-weight: 500;
+      border: none;
+      padding-bottom: 2px;
+      border-bottom: 1px solid transparent;
+      transition: border-color .2s, color .2s;
+    }
+    .back:hover { color: var(--ink); border-bottom-color: var(--ink); opacity: 1; }
+
+    main { position: relative; z-index: 2; max-width: 720px; margin: 0 auto; padding: 80px 32px 120px; }
+
+    .doc-head {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 28px;
+      margin-bottom: 72px;
+      align-items: start;
+    }
+    .doc-mark {
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      letter-spacing: 0.05em;
+      color: var(--ink-mute);
+      padding-top: 14px;
+      border-top: 1px solid var(--ink);
+    }
+    .doc-mark::before { content: '§ '; color: var(--accent); }
+    .doc-kicker {
+      font-size: 0.74rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-bottom: 18px;
+    }
+    h1 {
+      font-family: var(--serif);
+      font-weight: 360;
+      font-size: clamp(2.4rem, 5vw, 3.6rem);
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+      margin-bottom: 18px;
+      font-variation-settings: 'opsz' 144;
+    }
+    h1 em { font-style: italic; color: var(--accent); font-weight: 380; }
+
+    .updated {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      color: var(--ink-mute);
+    }
+
+    h2 {
+      font-family: var(--serif);
+      font-weight: 420;
+      font-size: 1.4rem;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin: 56px 0 16px;
+      color: var(--ink);
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+    }
+    h2 .clause {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+    }
+
+    p { font-size: 1rem; color: var(--ink-soft); margin-bottom: 14px; }
+    p strong { color: var(--ink); font-weight: 500; }
+    ul { list-style: none; margin: 14px 0 14px; padding: 0; }
+    ul li {
+      font-size: 0.98rem;
+      color: var(--ink-soft);
+      padding: 10px 0 10px 22px;
+      border-bottom: 1px solid var(--line);
+      position: relative;
+    }
+    ul li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-family: var(--mono);
+    }
+    ul li:last-child { border-bottom: none; }
+    ul li strong { color: var(--ink); font-weight: 500; }
+
+    .contact-card {
+      margin-top: 72px;
+      padding: 32px 28px;
+      background: var(--chip);
+      border: 1px solid var(--line-firm);
+      border-radius: 4px;
+    }
+    .contact-card h3 {
+      font-family: var(--serif);
+      font-weight: 420;
+      font-size: 1.3rem;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+      color: var(--ink);
+    }
+    .contact-card p { margin-bottom: 0; font-size: 0.95rem; }
+
+    @media (max-width: 600px) {
+      nav.top { padding: 14px 22px; }
+      main { padding: 56px 22px 96px; }
+      .doc-head { grid-template-columns: 56px 1fr; gap: 18px; }
+      h2 { flex-direction: column; gap: 4px; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="brand"><a href="index.html">Marketiq<em>.</em></a></div>
+  <a href="index.html" class="back">← Back to home</a>
+</nav>
+
+<main>
+  <div class="doc-head">
+    <div class="doc-mark">T / 01</div>
+    <div>
+      <div class="doc-kicker">Terms</div>
+      <h1>Terms of <em>service</em>.</h1>
+      <div class="updated">Last updated · April 2026</div>
+    </div>
+  </div>
+
+  <h2><span class="clause">§ 01</span> Acceptance</h2>
+  <p>By using Marketiq you agree to these terms. If you do not agree, do not use the app.</p>
+
+  <h2><span class="clause">§ 02</span> What Marketiq does</h2>
+  <p>Marketiq is a price comparison service. We display product listings and prices from third-party marketplaces. We do not sell products directly. All purchases happen on the merchant's platform.</p>
+
+  <h2><span class="clause">§ 03</span> Free and Pro accounts</h2>
+  <ul>
+    <li><strong>Free —</strong> 10 searches per day, 20 results per search, 3 active price alerts.</li>
+    <li><strong>Pro —</strong> unlimited searches, 50 results per search, unlimited alerts.</li>
+    <li>Pro subscriptions are billed monthly at <strong>€2.99</strong>. Payments are processed by Google Play.</li>
+    <li>Subscriptions can be cancelled at any time from your Google Play subscriptions.</li>
+  </ul>
+
+  <h2><span class="clause">§ 04</span> Affiliate disclosure</h2>
+  <p>Marketiq participates in affiliate programs including eBay Partner Network, Awin, Amazon Associates, Kelkoo, and Tradedoubler. We earn a commission on qualifying purchases made through our links — at no extra cost to you.</p>
+
+  <h2><span class="clause">§ 05</span> Accuracy of prices</h2>
+  <p>Prices shown are sourced in real time from third-party platforms and may change. Marketiq is not responsible for pricing errors or availability. Always verify the final price on the merchant's website before purchasing.</p>
+
+  <h2><span class="clause">§ 06</span> Prohibited use</h2>
+  <ul>
+    <li>Do not use the app to scrape or harvest data.</li>
+    <li>Do not attempt to bypass usage limits or authentication.</li>
+    <li>Do not use the app for any illegal purpose.</li>
+  </ul>
+
+  <h2><span class="clause">§ 07</span> Limitation of liability</h2>
+  <p>Marketiq is provided <em>as is</em>. We are not liable for any losses arising from use of the app, inaccurate prices, or third-party merchant issues.</p>
+
+  <h2><span class="clause">§ 08</span> Changes</h2>
+  <p>We may update these terms. Continued use of the app after changes means you accept the new terms.</p>
+
+  <div class="contact-card">
+    <h3>Contact</h3>
+    <p>Write to <a href="mailto:marketiqapp@gmail.com">marketiqapp@gmail.com</a>. A person replies.</p>
+  </div>
+</main>
+
+</body>
+</html>

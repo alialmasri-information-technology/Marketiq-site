@@ -1,0 +1,1602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marketiq — A quiet way to pay less, across Europe.</title>
+  <meta name="description" content="Marketiq compares prices across eBay's six EU markets, the Awin affiliate network, and 27 European supermarkets. Free to start. Pro from €2.99 a month." />
+  <meta name="theme-color" content="#FAFAF7" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <noscript><style>.reveal,.reveal-soft{opacity:1!important;transform:none!important}</style></noscript>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #FAFAF7;
+      --card:      #FFFFFF;
+      --chip:      #F1EFE8;
+      --ink:       #15140F;
+      --ink-soft:  #5C5A52;
+      --ink-mute:  #9A968B;
+      --accent:    #1F8A5B;
+      --accent-ink:#FFFFFF;
+      --accent-haze:rgba(31,138,91,0.08);
+      --line:      rgba(20,18,12,0.07);
+      --line-firm: rgba(20,18,12,0.18);
+      --serif:     'Fraunces', ui-serif, Georgia, 'Times New Roman', serif;
+      --sans:      'Geist', system-ui, -apple-system, sans-serif;
+      --mono:      'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.55;
+      font-weight: 400;
+      font-feature-settings: 'ss01', 'cv11';
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    /* ── PAPER GRAIN OVERLAY ── */
+    body::before {
+      content:'';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.5;
+      mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.08, 0 0 0 0 0.08, 0 0 0 0 0.06, 0 0 0 0.045 0'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>");
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; }
+
+    /* ── NUMERIC TYPE ── */
+    .num, .num-soft, [data-count] {
+      font-family: var(--mono);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.01em;
+    }
+
+    /* ── LAYOUT WRAPPERS ── */
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+    .container-narrow {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    /* ── NAVBAR ── */
+    nav.top {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 90;
+      padding: 18px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(250, 250, 247, 0.78);
+      backdrop-filter: saturate(140%) blur(14px);
+      -webkit-backdrop-filter: saturate(140%) blur(14px);
+      border-bottom: 1px solid transparent;
+      transition: border-color .3s, padding .3s;
+    }
+    nav.top.scrolled { border-bottom-color: var(--line); padding: 12px 32px; }
+
+    .brand {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: 1.5rem;
+      letter-spacing: -0.02em;
+      font-variation-settings: 'opsz' 144;
+    }
+    .brand em {
+      font-style: italic;
+      color: var(--accent);
+      font-weight: 400;
+    }
+
+    .nav-links { display: flex; gap: 30px; list-style: none; align-items: center; }
+    .nav-links a {
+      color: var(--ink-soft);
+      font-size: 0.84rem;
+      font-weight: 500;
+      letter-spacing: 0.005em;
+      position: relative;
+      padding: 4px 0;
+      transition: color .2s;
+    }
+    .nav-links a::after {
+      content:'';
+      position: absolute;
+      left: 0; bottom: 0;
+      width: 100%;
+      height: 1px;
+      background: var(--ink);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .35s cubic-bezier(.7,0,.2,1);
+    }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+    .nav-cta {
+      background: var(--ink);
+      color: var(--bg);
+      padding: 9px 18px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      transition: background .2s, color .2s;
+    }
+    .nav-cta::after { display: none !important; }
+    .nav-cta:hover { background: var(--accent); color: var(--accent-ink) !important; }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 6px;
+      z-index: 200;
+    }
+    .hamburger span {
+      width: 22px; height: 1.5px;
+      background: var(--ink);
+      border-radius: 2px;
+      transition: all .3s;
+    }
+
+    section { position: relative; z-index: 2; }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 168px 0 112px;
+      position: relative;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+      position: relative;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.74rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-bottom: 40px;
+    }
+    .eyebrow .dot {
+      width: 7px; height: 7px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 0 4px var(--accent-haze);
+      animation: pulse-dot 2.4s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { box-shadow: 0 0 0 4px var(--accent-haze); }
+      50% { box-shadow: 0 0 0 8px rgba(31,138,91,0.04); }
+    }
+    .eyebrow .sep {
+      display: inline-block;
+      width: 22px;
+      height: 1px;
+      background: var(--line-firm);
+    }
+
+    .hero h1 {
+      font-family: var(--serif);
+      font-weight: 360;
+      font-size: clamp(3rem, 8.5vw, 7.2rem);
+      line-height: 0.97;
+      letter-spacing: -0.045em;
+      max-width: 14ch;
+      margin-bottom: 32px;
+      font-variation-settings: 'opsz' 144;
+    }
+    .hero h1 em {
+      font-style: italic;
+      font-weight: 380;
+      color: var(--accent);
+      font-variation-settings: 'opsz' 144;
+    }
+    .hero h1 .amp {
+      font-style: italic;
+      font-weight: 300;
+      color: var(--ink-mute);
+      margin: 0 0.05em;
+    }
+
+    .hero-lede {
+      max-width: 38ch;
+      font-size: clamp(1.04rem, 1.4vw, 1.18rem);
+      line-height: 1.55;
+      color: var(--ink-soft);
+      margin-bottom: 44px;
+    }
+    .hero-lede .live-source {
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 96px;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--ink);
+      color: var(--bg);
+      padding: 16px 28px;
+      border-radius: 999px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      letter-spacing: 0.005em;
+      transition: background .25s, transform .25s;
+    }
+    .btn-primary .arrow {
+      display: inline-block;
+      width: 18px; height: 1px;
+      background: currentColor;
+      position: relative;
+      transition: width .25s;
+    }
+    .btn-primary .arrow::after {
+      content:'';
+      position: absolute;
+      right: 0; top: 50%;
+      width: 7px; height: 7px;
+      border-top: 1px solid currentColor;
+      border-right: 1px solid currentColor;
+      transform: translateY(-50%) rotate(45deg);
+    }
+    .btn-primary:hover { background: var(--accent); }
+    .btn-primary:hover .arrow { width: 26px; }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--ink);
+      padding: 16px 4px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      border-bottom: 1px solid var(--line-firm);
+      transition: border-color .2s, color .2s;
+    }
+    .btn-ghost:hover { border-color: var(--ink); color: var(--accent); }
+
+    /* hero ticker — refined replacement for floating cards */
+    .ticker-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--line);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      max-width: 1180px;
+    }
+    .ticker-cell {
+      background: var(--bg);
+      padding: 24px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .ticker-cell .label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-mute);
+    }
+    .ticker-cell .body {
+      font-size: 0.96rem;
+      color: var(--ink);
+      font-weight: 500;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .ticker-cell .price {
+      font-family: var(--mono);
+      font-variant-numeric: tabular-nums;
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 1.02rem;
+    }
+    .ticker-cell .price.was {
+      color: var(--ink-mute);
+      text-decoration: line-through;
+      text-decoration-thickness: 1px;
+      font-weight: 400;
+      font-size: 0.84rem;
+    }
+    .ticker-cell .meta {
+      font-size: 0.78rem;
+      color: var(--ink-mute);
+    }
+
+    /* ── STATS ── */
+    .stats {
+      padding: 64px 0 96px;
+      border-top: 1px solid var(--line);
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+    }
+    .stat {
+      padding: 0 28px;
+      border-left: 1px solid var(--line);
+    }
+    .stat:first-child { padding-left: 0; border-left: none; }
+    .stat-num {
+      font-family: var(--mono);
+      font-variant-numeric: tabular-nums;
+      font-size: clamp(2.6rem, 5vw, 3.6rem);
+      font-weight: 500;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      line-height: 1;
+      margin-bottom: 14px;
+    }
+    .stat-label {
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      font-weight: 500;
+    }
+
+    /* ── SECTION HEADERS ── */
+    .section-head {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 32px;
+      margin-bottom: 72px;
+      align-items: start;
+    }
+    .section-mark {
+      font-family: var(--mono);
+      font-size: 0.84rem;
+      letter-spacing: 0.05em;
+      color: var(--ink-mute);
+      padding-top: 14px;
+      border-top: 1px solid var(--ink);
+    }
+    .section-mark::before {
+      content: '§ ';
+      color: var(--accent);
+    }
+    .section-title {
+      font-family: var(--serif);
+      font-weight: 360;
+      font-size: clamp(2rem, 4vw, 3.1rem);
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+      color: var(--ink);
+      max-width: 22ch;
+      font-variation-settings: 'opsz' 144;
+    }
+    .section-title em {
+      font-style: italic;
+      font-weight: 380;
+      color: var(--accent);
+    }
+    .section-kicker {
+      font-size: 0.74rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-bottom: 18px;
+    }
+    .section-lede {
+      max-width: 50ch;
+      font-size: 1.02rem;
+      color: var(--ink-soft);
+      margin-top: 20px;
+    }
+
+    /* ── HOW IT WORKS ── */
+    .how { padding: 120px 0; }
+    .how-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      border-top: 1px solid var(--ink);
+    }
+    .how-row {
+      display: grid;
+      grid-template-columns: 80px 1fr 2.2fr;
+      gap: 32px;
+      padding: 36px 0;
+      border-bottom: 1px solid var(--line);
+      align-items: start;
+      transition: background-color .35s;
+    }
+    .how-row:hover { background: rgba(31,138,91,0.025); }
+    .how-row .step {
+      font-family: var(--mono);
+      font-size: 0.86rem;
+      color: var(--ink-mute);
+      padding-top: 4px;
+    }
+    .how-row .step::before {
+      content: '';
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+    .how-row h3 {
+      font-family: var(--serif);
+      font-weight: 420;
+      font-size: 1.6rem;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+    .how-row p {
+      font-size: 0.98rem;
+      color: var(--ink-soft);
+      max-width: 50ch;
+      line-height: 1.6;
+    }
+
+    /* ── FEATURES ── */
+    .features { padding: 120px 0; background: var(--chip); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--line);
+      border-top: 1px solid var(--ink);
+      border-left: 1px solid var(--ink);
+    }
+    .feat {
+      background: var(--bg);
+      padding: 36px 30px;
+      border-right: 1px solid var(--ink);
+      border-bottom: 1px solid var(--ink);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-height: 240px;
+      transition: background .25s;
+    }
+    .feat:hover { background: var(--chip); }
+    .feat .feat-num {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--ink-mute);
+      letter-spacing: 0.06em;
+    }
+    .feat h3 {
+      font-family: var(--serif);
+      font-weight: 420;
+      font-size: 1.4rem;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: var(--ink);
+      margin-top: 6px;
+    }
+    .feat h3 em {
+      font-style: italic;
+      color: var(--accent);
+      font-weight: 380;
+    }
+    .feat p {
+      font-size: 0.92rem;
+      color: var(--ink-soft);
+      line-height: 1.6;
+    }
+    .feat-tag {
+      align-self: flex-start;
+      margin-top: auto;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      padding: 4px 10px;
+      border: 1px solid var(--accent);
+      border-radius: 999px;
+    }
+
+    /* ── SOURCES ── */
+    .sources { padding: 120px 0; }
+    .sources-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      border-top: 1px solid var(--ink);
+    }
+    .source-row {
+      display: grid;
+      grid-template-columns: 1fr 110px 130px 110px;
+      gap: 24px;
+      padding: 22px 0;
+      border-bottom: 1px solid var(--line);
+      align-items: center;
+      font-size: 0.94rem;
+    }
+    .source-row .name {
+      font-family: var(--serif);
+      font-weight: 420;
+      font-size: 1.12rem;
+      letter-spacing: -0.015em;
+      color: var(--ink);
+    }
+    .source-row .region {
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      color: var(--ink-soft);
+      letter-spacing: 0.04em;
+    }
+    .source-row .kind {
+      font-size: 0.82rem;
+      color: var(--ink-soft);
+    }
+    .source-row .status {
+      font-family: var(--mono);
+      font-size: 0.76rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-align: right;
+    }
+    .status.live { color: var(--accent); }
+    .status.live::before {
+      content: '●';
+      margin-right: 6px;
+      font-size: 0.6rem;
+      vertical-align: middle;
+    }
+    .status.soon { color: var(--ink-mute); }
+    .status.soon::before {
+      content: '○';
+      margin-right: 6px;
+      font-size: 0.6rem;
+      vertical-align: middle;
+    }
+
+    /* ── SUPERMARKETS ── */
+    .supers { padding: 120px 0; background: var(--chip); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .super-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 1px;
+      background: var(--line);
+      border-top: 1px solid var(--ink);
+      border-left: 1px solid var(--ink);
+    }
+    .super {
+      background: var(--bg);
+      padding: 26px 18px;
+      border-right: 1px solid var(--ink);
+      border-bottom: 1px solid var(--ink);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      transition: background .25s;
+    }
+    .super:hover { background: var(--chip); }
+    .super .flag { font-size: 1.1rem; margin-bottom: 4px; line-height: 1; }
+    .super .name {
+      font-family: var(--serif);
+      font-size: 1.04rem;
+      font-weight: 420;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+    }
+    .super .country {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      color: var(--ink-mute);
+    }
+
+    /* ── PULL QUOTE ── */
+    .pullquote {
+      padding: 140px 0;
+      text-align: center;
+    }
+    .pullquote-mark {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 4.5rem;
+      line-height: 0.4;
+      color: var(--accent);
+      margin-bottom: 30px;
+      font-variation-settings: 'opsz' 144;
+    }
+    .pullquote q {
+      display: block;
+      font-family: var(--serif);
+      font-weight: 360;
+      font-size: clamp(1.7rem, 3.6vw, 2.8rem);
+      line-height: 1.2;
+      letter-spacing: -0.025em;
+      color: var(--ink);
+      max-width: 22ch;
+      margin: 0 auto;
+      quotes: none;
+      font-variation-settings: 'opsz' 144;
+    }
+    .pullquote q::before, .pullquote q::after { content: none; }
+    .pullquote q em {
+      font-style: italic;
+      color: var(--accent);
+    }
+    .pullquote .attribution {
+      margin-top: 36px;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      color: var(--ink-mute);
+      text-transform: uppercase;
+    }
+
+    /* ── PRICING ── */
+    .pricing { padding: 120px 0; border-top: 1px solid var(--line); }
+    .plans {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border: 1px solid var(--ink);
+      background: var(--bg);
+    }
+    .plan {
+      padding: 48px 44px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      border-right: 1px solid var(--ink);
+    }
+    .plan:last-child { border-right: none; background: var(--ink); color: var(--bg); }
+    .plan-header { display: flex; justify-content: space-between; align-items: flex-start; }
+    .plan-name {
+      font-family: var(--serif);
+      font-weight: 420;
+      font-size: 1.5rem;
+      letter-spacing: -0.02em;
+    }
+    .plan-flag {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 5px 11px;
+      border: 1px solid currentColor;
+      border-radius: 999px;
+    }
+    .plan-price {
+      font-family: var(--mono);
+      font-variant-numeric: tabular-nums;
+      font-size: 3.6rem;
+      font-weight: 500;
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+    .plan-price .currency {
+      font-size: 1.6rem;
+      vertical-align: 0.9em;
+      margin-right: 2px;
+    }
+    .plan-price .period {
+      font-family: var(--sans);
+      font-size: 0.92rem;
+      letter-spacing: 0;
+      font-weight: 400;
+      color: var(--ink-mute);
+      margin-left: 4px;
+    }
+    .plan:last-child .plan-price .period { color: rgba(255,255,255,0.55); }
+    .plan-desc { font-size: 0.96rem; color: var(--ink-soft); line-height: 1.55; }
+    .plan:last-child .plan-desc { color: rgba(255,255,255,0.7); }
+    .plan-features { list-style: none; display: flex; flex-direction: column; gap: 0; }
+    .plan-features li {
+      padding: 14px 0;
+      border-top: 1px solid var(--line);
+      font-size: 0.92rem;
+      display: grid;
+      grid-template-columns: 24px 1fr auto;
+      gap: 10px;
+      align-items: baseline;
+    }
+    .plan:last-child .plan-features li { border-top-color: rgba(255,255,255,0.1); }
+    .plan-features li:last-child { padding-bottom: 0; }
+    .plan-features .mark {
+      font-family: var(--mono);
+      font-size: 0.86rem;
+      color: var(--accent);
+    }
+    .plan-features .mark.no { color: var(--ink-mute); }
+    .plan:last-child .plan-features .mark { color: #4ade80; }
+    .plan-features .qty {
+      font-family: var(--mono);
+      font-variant-numeric: tabular-nums;
+      color: var(--ink-mute);
+      font-size: 0.82rem;
+    }
+    .plan:last-child .plan-features .qty { color: rgba(255,255,255,0.55); }
+    .plan-features .qty.lim { color: var(--accent); }
+    .plan:last-child .plan-features .qty.lim { color: #4ade80; }
+
+    .plan-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 16px 22px;
+      border-radius: 999px;
+      background: var(--ink);
+      color: var(--bg);
+      font-size: 0.92rem;
+      font-weight: 500;
+      transition: background .25s;
+    }
+    .plan-cta .arrow {
+      display: inline-block;
+      width: 16px; height: 1px;
+      background: currentColor;
+      position: relative;
+      transition: width .25s;
+    }
+    .plan-cta .arrow::after {
+      content:'';
+      position: absolute;
+      right: 0; top: 50%;
+      width: 6px; height: 6px;
+      border-top: 1px solid currentColor;
+      border-right: 1px solid currentColor;
+      transform: translateY(-50%) rotate(45deg);
+    }
+    .plan-cta:hover { background: var(--accent); }
+    .plan-cta:hover .arrow { width: 24px; }
+    .plan:last-child .plan-cta { background: var(--bg); color: var(--ink); }
+    .plan:last-child .plan-cta:hover { background: var(--accent); color: var(--accent-ink); }
+
+    .pricing-fine {
+      margin-top: 36px;
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--ink-mute);
+      letter-spacing: 0.02em;
+    }
+
+    /* ── TRUST ── */
+    .trust { padding: 120px 0; background: var(--chip); border-top: 1px solid var(--line); }
+    .trust-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0;
+      border-top: 1px solid var(--ink);
+    }
+    .trust-row {
+      display: grid;
+      grid-template-columns: 32px 1fr;
+      gap: 24px;
+      padding: 36px 36px 36px 0;
+      border-bottom: 1px solid var(--line);
+      align-items: start;
+    }
+    .trust-row:nth-child(odd) { padding-right: 60px; border-right: 1px solid var(--line); }
+    .trust-row:nth-child(even) { padding-left: 60px; }
+    .trust-row .roman {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 1.4rem;
+      color: var(--accent);
+      line-height: 1;
+      padding-top: 3px;
+    }
+    .trust-row h4 {
+      font-family: var(--serif);
+      font-weight: 420;
+      font-size: 1.25rem;
+      letter-spacing: -0.015em;
+      margin-bottom: 10px;
+      color: var(--ink);
+    }
+    .trust-row p {
+      font-size: 0.94rem;
+      color: var(--ink-soft);
+      line-height: 1.6;
+    }
+    .trust-row a { color: var(--accent); border-bottom: 1px solid currentColor; transition: opacity .2s; }
+    .trust-row a:hover { opacity: 0.7; }
+
+    /* ── CLOSER ── */
+    .closer {
+      padding: 160px 0;
+      background: var(--ink);
+      color: var(--bg);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .closer::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 1px; height: 80px;
+      background: var(--accent);
+    }
+    .closer h2 {
+      font-family: var(--serif);
+      font-weight: 360;
+      font-size: clamp(2.4rem, 5.2vw, 4rem);
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+      max-width: 18ch;
+      margin: 0 auto 36px;
+      font-variation-settings: 'opsz' 144;
+    }
+    .closer h2 em {
+      font-style: italic;
+      color: #6cd7a8;
+      font-weight: 380;
+    }
+    .closer-lede {
+      font-size: 1.04rem;
+      color: rgba(255,255,255,0.65);
+      max-width: 46ch;
+      margin: 0 auto 50px;
+    }
+    .closer-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--bg);
+      color: var(--ink);
+      padding: 18px 32px;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: background .25s, color .25s;
+    }
+    .closer-cta:hover { background: var(--accent); color: var(--accent-ink); }
+    .closer-cta .play {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: currentColor;
+      position: relative;
+    }
+    .closer-cta .play::after {
+      content:'';
+      position: absolute;
+      top: 50%; left: 55%;
+      transform: translate(-50%, -50%);
+      width: 0; height: 0;
+      border-left: 7px solid var(--ink);
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+    }
+    .closer-cta:hover .play::after { border-left-color: var(--accent-ink); }
+    .closer .meta {
+      margin-top: 24px;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.4);
+      text-transform: uppercase;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--bg);
+      padding: 80px 0 36px;
+      border-top: 1px solid var(--line);
+      position: relative;
+      z-index: 2;
+    }
+    .foot-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 64px;
+    }
+    .foot-brand .brand { font-size: 1.6rem; margin-bottom: 18px; display: inline-block; }
+    .foot-brand p {
+      font-size: 0.92rem;
+      color: var(--ink-soft);
+      max-width: 32ch;
+      line-height: 1.6;
+    }
+    .foot-brand .mail {
+      margin-top: 18px;
+      font-family: var(--mono);
+      font-size: 0.84rem;
+      color: var(--ink-soft);
+    }
+    .foot-brand .mail a { border-bottom: 1px solid var(--line-firm); transition: border-color .2s; }
+    .foot-brand .mail a:hover { border-color: var(--accent); color: var(--accent); }
+    .foot-col h4 {
+      font-family: var(--mono);
+      font-size: 0.74rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-mute);
+      margin-bottom: 18px;
+    }
+    .foot-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .foot-col ul a {
+      font-size: 0.92rem;
+      color: var(--ink-soft);
+      transition: color .2s;
+    }
+    .foot-col ul a:hover { color: var(--accent); }
+    .foot-bottom {
+      padding-top: 32px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      font-size: 0.82rem;
+      color: var(--ink-mute);
+    }
+    .foot-bottom .made {
+      font-family: var(--serif);
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    /* ── MARQUEE ── */
+    .marquee-outer {
+      overflow: hidden;
+      padding: 18px 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: var(--bg);
+      position: relative;
+      z-index: 2;
+    }
+    .marquee-track {
+      display: flex;
+      gap: 56px;
+      width: max-content;
+      animation: marquee 38s linear infinite;
+      font-family: var(--serif);
+      font-style: italic;
+      font-weight: 420;
+      font-size: 1.18rem;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      font-variation-settings: 'opsz' 144;
+    }
+    @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    .marquee-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      white-space: nowrap;
+    }
+    .marquee-item .sep {
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    /* ── REVEAL ANIMATIONS ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity .85s cubic-bezier(.2,.6,.2,1), transform .85s cubic-bezier(.2,.6,.2,1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-soft {
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+    .reveal-soft.visible { opacity: 1; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 960px) {
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+      .super-grid { grid-template-columns: repeat(4, 1fr); }
+      .foot-grid { grid-template-columns: 1.4fr 1fr 1fr; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); row-gap: 36px; }
+      .stat:nth-child(3) { padding-left: 0; border-left: none; }
+      .section-head { grid-template-columns: 60px 1fr; gap: 20px; }
+      .how-row { grid-template-columns: 60px 1fr; }
+      .how-row p { grid-column: 2; }
+      .source-row { grid-template-columns: 1fr 80px 90px; }
+      .source-row .kind { display: none; }
+      .plans { grid-template-columns: 1fr; }
+      .plan { border-right: none; border-bottom: 1px solid var(--ink); }
+      .plan:last-child { border-bottom: none; }
+      .trust-grid { grid-template-columns: 1fr; }
+      .trust-row { padding: 32px 0 !important; border-right: none !important; padding-left: 0 !important; padding-right: 0 !important; }
+    }
+    @media (max-width: 720px) {
+      nav.top { padding: 14px 22px; }
+      .nav-links {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: var(--bg);
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 30px;
+        padding: 80px 32px;
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { font-size: 1.6rem; font-family: var(--serif); font-weight: 420; }
+      .hamburger { display: flex; }
+      .container, .container-narrow { padding: 0 22px; }
+      .hero { padding: 130px 0 80px; }
+      .hero-cta { flex-direction: column; align-items: flex-start; gap: 18px; margin-bottom: 64px; }
+      .ticker-row { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .features-grid { grid-template-columns: 1fr; }
+      .super-grid { grid-template-columns: repeat(3, 1fr); }
+      .foot-grid { grid-template-columns: 1fr; gap: 36px; }
+      .foot-bottom { flex-direction: column; align-items: flex-start; }
+      .plan { padding: 36px 28px; }
+      .pullquote { padding: 100px 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="top" id="navbar">
+  <div class="brand">Marketiq<em>.</em></div>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#how">How</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#supermarkets">Supermarkets</a></li>
+    <li><a href="https://play.google.com/store/apps/details?id=com.marketiq.app" class="nav-cta" target="_blank" rel="noopener">Get the app</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="reveal">
+      <div class="eyebrow">
+        <span class="dot"></span>
+        Live across Europe
+        <span class="sep"></span>
+        Vol. I · Issue 01
+      </div>
+    </div>
+
+    <h1 class="reveal" style="transition-delay:.08s">
+      Stop overpaying<span class="amp">,</span><br/>
+      find <em>every</em> deal.
+    </h1>
+
+    <p class="hero-lede reveal" style="transition-delay:.16s">
+      One quiet little app that searches <span class="live-source">eBay's six EU markets</span>, the <span class="live-source">Awin affiliate network</span>, and <span class="live-source">27 European supermarkets</span> — so you never pay the first price you see.
+    </p>
+
+    <div class="hero-cta reveal" style="transition-delay:.24s">
+      <a href="https://play.google.com/store/apps/details?id=com.marketiq.app" target="_blank" rel="noopener" class="btn-primary">
+        Download free<span class="arrow"></span>
+      </a>
+      <a href="#pricing" class="btn-ghost">See Pro — €2.99/mo</a>
+    </div>
+
+    <div class="ticker-row reveal-soft" style="transition-delay:.4s">
+      <div class="ticker-cell">
+        <div class="label">eBay DE · live</div>
+        <div class="body"><span>Sony WH-1000XM5</span><span class="price">€219</span></div>
+        <div class="meta">Was <span class="num">€349</span> · saved <span class="num">€130</span></div>
+      </div>
+      <div class="ticker-cell">
+        <div class="label">Alert hit · 6 min ago</div>
+        <div class="body"><span>iPhone 15 · 128 GB</span><span class="price">€749</span></div>
+        <div class="meta">Target was <span class="num">€799</span></div>
+      </div>
+      <div class="ticker-cell">
+        <div class="label">Lidl DE · this week</div>
+        <div class="body"><span>Whole milk · 1 L</span><span class="price">€0.89</span></div>
+        <div class="meta">Catalogue offer · expires Sun</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat reveal">
+        <div class="stat-num" data-count="27" data-suffix="">0</div>
+        <div class="stat-label">EU supermarkets</div>
+      </div>
+      <div class="stat reveal" style="transition-delay:.08s">
+        <div class="stat-num" data-count="6" data-suffix="">0</div>
+        <div class="stat-label">eBay markets</div>
+      </div>
+      <div class="stat reveal" style="transition-delay:.16s">
+        <div class="stat-num" data-count="10" data-suffix="+">0</div>
+        <div class="stat-label">Affiliate networks</div>
+      </div>
+      <div class="stat reveal" style="transition-delay:.24s">
+        <div class="stat-num" data-count="100" data-suffix="%">0</div>
+        <div class="stat-label">Privacy-first</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-outer">
+  <div class="marquee-track">
+    <div class="marquee-item">eBay Germany <span class="sep"></span></div>
+    <div class="marquee-item">eBay France <span class="sep"></span></div>
+    <div class="marquee-item">eBay Italy <span class="sep"></span></div>
+    <div class="marquee-item">eBay Spain <span class="sep"></span></div>
+    <div class="marquee-item">eBay Netherlands <span class="sep"></span></div>
+    <div class="marquee-item">eBay UK <span class="sep"></span></div>
+    <div class="marquee-item">Awin Network <span class="sep"></span></div>
+    <div class="marquee-item">Lidl <span class="sep"></span></div>
+    <div class="marquee-item">Aldi <span class="sep"></span></div>
+    <div class="marquee-item">Carrefour <span class="sep"></span></div>
+    <div class="marquee-item">Kaufland <span class="sep"></span></div>
+    <div class="marquee-item">Jumbo <span class="sep"></span></div>
+    <div class="marquee-item">Albert Heijn <span class="sep"></span></div>
+    <div class="marquee-item">Mercadona <span class="sep"></span></div>
+    <div class="marquee-item">eBay Germany <span class="sep"></span></div>
+    <div class="marquee-item">eBay France <span class="sep"></span></div>
+    <div class="marquee-item">eBay Italy <span class="sep"></span></div>
+    <div class="marquee-item">eBay Spain <span class="sep"></span></div>
+    <div class="marquee-item">eBay Netherlands <span class="sep"></span></div>
+    <div class="marquee-item">eBay UK <span class="sep"></span></div>
+    <div class="marquee-item">Awin Network <span class="sep"></span></div>
+    <div class="marquee-item">Lidl <span class="sep"></span></div>
+    <div class="marquee-item">Aldi <span class="sep"></span></div>
+    <div class="marquee-item">Carrefour <span class="sep"></span></div>
+    <div class="marquee-item">Kaufland <span class="sep"></span></div>
+    <div class="marquee-item">Jumbo <span class="sep"></span></div>
+    <div class="marquee-item">Albert Heijn <span class="sep"></span></div>
+    <div class="marquee-item">Mercadona <span class="sep"></span></div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="section-mark">01</div>
+      <div>
+        <div class="section-kicker">How it works</div>
+        <h2 class="section-title">Three quiet steps<br/>to a <em>better price</em>.</h2>
+        <p class="section-lede">Marketiq opens the twelve tabs you'd otherwise open yourself — and closes them once it has the answer.</p>
+      </div>
+    </div>
+
+    <div class="how-list">
+      <div class="how-row reveal">
+        <div class="step">01</div>
+        <h3>Search anything</h3>
+        <p>Type any product. Filter by category, condition, price range, or country. Scan a barcode if you'd rather not type.</p>
+      </div>
+      <div class="how-row reveal">
+        <div class="step">02</div>
+        <h3>Compare in seconds</h3>
+        <p>Results from six eBay EU markets and the Awin affiliate network appear together, sorted lowest first.</p>
+      </div>
+      <div class="how-row reveal">
+        <div class="step">03</div>
+        <h3>Set a price alert</h3>
+        <p>Not ready to buy? Name a target. We watch hourly and notify you the moment a listing dips below it.</p>
+      </div>
+      <div class="how-row reveal">
+        <div class="step">04</div>
+        <h3>Check the supermarkets</h3>
+        <p>Weekly catalogues from 27 chains across Germany, France, Spain, Italy, the Netherlands and beyond.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="section-mark">02</div>
+      <div>
+        <div class="section-kicker">Features</div>
+        <h2 class="section-title">Everything you need to<br/>save money in <em>Europe</em>.</h2>
+        <p class="section-lede">Built for the way Europeans actually shop — across borders, languages, and marketplaces.</p>
+      </div>
+    </div>
+
+    <div class="features-grid">
+      <div class="feat reveal">
+        <div class="feat-num">F · 01</div>
+        <h3>Six eBay markets</h3>
+        <p>Germany, the UK, France, Italy, Spain and the Netherlands — searched in one pass. The best price wins.</p>
+      </div>
+      <div class="feat reveal">
+        <div class="feat-num">F · 02</div>
+        <h3>Awin affiliate network</h3>
+        <p>Thousands of EU online shops connected through Awin. Electronics, fashion, home — all in one list.</p>
+      </div>
+      <div class="feat reveal">
+        <div class="feat-num">F · 03</div>
+        <h3>Price history <em>Pro</em></h3>
+        <p>See how a listing's price has moved over time. Know whether you're getting a real deal or it might still drop.</p>
+        <span class="feat-tag">Pro</span>
+      </div>
+      <div class="feat reveal">
+        <div class="feat-num">F · 04</div>
+        <h3>Smart filters</h3>
+        <p>Filter by category, condition, range, and market. Find exactly what you want, priced how you want it.</p>
+      </div>
+      <div class="feat reveal">
+        <div class="feat-num">F · 05</div>
+        <h3>Unlimited alerts <em>Pro</em></h3>
+        <p>Watch as many products as you like. The moment one dips to your target, your phone tells you.</p>
+        <span class="feat-tag">Pro</span>
+      </div>
+      <div class="feat reveal">
+        <div class="feat-num">F · 06</div>
+        <h3>EU supermarkets</h3>
+        <p>Weekly offers and catalogues from 27 supermarkets in 10 EU countries — all inside the app.</p>
+      </div>
+      <div class="feat reveal">
+        <div class="feat-num">F · 07</div>
+        <h3>Multilingual</h3>
+        <p>English, German, French, Spanish and more. Switch language any time from your profile.</p>
+      </div>
+      <div class="feat reveal">
+        <div class="feat-num">F · 08</div>
+        <h3>GDPR compliant</h3>
+        <p>Your data stays in Europe — Firebase europe-west1. We never sell personal data to third parties.</p>
+      </div>
+      <div class="feat reveal">
+        <div class="feat-num">F · 09</div>
+        <h3>Deal scoring <em>Pro</em></h3>
+        <p>Our ranking doesn't just look at price — it weighs shipping, seller rating, and the market average.</p>
+        <span class="feat-tag">Pro</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PULL QUOTE -->
+<section class="pullquote">
+  <div class="container-narrow">
+    <div class="reveal">
+      <div class="pullquote-mark">&ldquo;</div>
+      <q>It's a calm shop window for the whole continent — <em>without the noise</em>.</q>
+      <div class="attribution">Marketiq · the price-comparison app for Europe</div>
+    </div>
+  </div>
+</section>
+
+<!-- SOURCES -->
+<section class="sources">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="section-mark">03</div>
+      <div>
+        <div class="section-kicker">Data sources</div>
+        <h2 class="section-title">Where we find <em>your</em> deals.</h2>
+        <p class="section-lede">Marketiq is connected to official affiliate networks and marketplace APIs. We don't scrape, we don't guess.</p>
+      </div>
+    </div>
+
+    <div class="sources-list">
+      <div class="source-row reveal"><div class="name">eBay Germany</div><div class="region">DE</div><div class="kind">Marketplace API</div><div class="status live">Live</div></div>
+      <div class="source-row reveal"><div class="name">eBay United Kingdom</div><div class="region">UK</div><div class="kind">Marketplace API</div><div class="status live">Live</div></div>
+      <div class="source-row reveal"><div class="name">eBay France</div><div class="region">FR</div><div class="kind">Marketplace API</div><div class="status live">Live</div></div>
+      <div class="source-row reveal"><div class="name">eBay Italy</div><div class="region">IT</div><div class="kind">Marketplace API</div><div class="status live">Live</div></div>
+      <div class="source-row reveal"><div class="name">eBay Spain</div><div class="region">ES</div><div class="kind">Marketplace API</div><div class="status live">Live</div></div>
+      <div class="source-row reveal"><div class="name">eBay Netherlands</div><div class="region">NL</div><div class="kind">Marketplace API</div><div class="status live">Live</div></div>
+      <div class="source-row reveal"><div class="name">Awin Network</div><div class="region">EU</div><div class="kind">Affiliate feed</div><div class="status live">Live</div></div>
+      <div class="source-row reveal"><div class="name">Tradedoubler</div><div class="region">EU</div><div class="kind">Affiliate feed</div><div class="status soon">Pending</div></div>
+      <div class="source-row reveal"><div class="name">Bol.com</div><div class="region">NL/BE</div><div class="kind">Affiliate feed</div><div class="status soon">Pending</div></div>
+      <div class="source-row reveal"><div class="name">Kelkoo</div><div class="region">EU</div><div class="kind">Affiliate feed</div><div class="status soon">Pending</div></div>
+      <div class="source-row reveal"><div class="name">TradeTracker</div><div class="region">EU</div><div class="kind">Affiliate feed</div><div class="status soon">Pending</div></div>
+      <div class="source-row reveal"><div class="name">AliExpress</div><div class="region">Global</div><div class="kind">Affiliate feed</div><div class="status soon">Pending</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SUPERMARKETS -->
+<section class="supers" id="supermarkets">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="section-mark">04</div>
+      <div>
+        <div class="section-kicker">Supermarkets</div>
+        <h2 class="section-title">27 EU supermarkets,<br/><em>one</em> quiet app.</h2>
+        <p class="section-lede">Weekly catalogues from the biggest chains across ten European countries.</p>
+      </div>
+    </div>
+
+    <div class="super-grid">
+      <div class="super reveal"><div class="flag">🇩🇪</div><div class="name">Lidl</div><div class="country">DE</div></div>
+      <div class="super reveal"><div class="flag">🇩🇪</div><div class="name">Aldi</div><div class="country">DE</div></div>
+      <div class="super reveal"><div class="flag">🇩🇪</div><div class="name">REWE</div><div class="country">DE</div></div>
+      <div class="super reveal"><div class="flag">🇩🇪</div><div class="name">Edeka</div><div class="country">DE</div></div>
+      <div class="super reveal"><div class="flag">🇩🇪</div><div class="name">Penny</div><div class="country">DE</div></div>
+      <div class="super reveal"><div class="flag">🇩🇪</div><div class="name">Netto</div><div class="country">DE</div></div>
+      <div class="super reveal"><div class="flag">🇩🇪</div><div class="name">Kaufland</div><div class="country">DE</div></div>
+      <div class="super reveal"><div class="flag">🇳🇱</div><div class="name">Albert Heijn</div><div class="country">NL</div></div>
+      <div class="super reveal"><div class="flag">🇳🇱</div><div class="name">Jumbo</div><div class="country">NL</div></div>
+      <div class="super reveal"><div class="flag">🇳🇱</div><div class="name">Plus</div><div class="country">NL</div></div>
+      <div class="super reveal"><div class="flag">🇫🇷</div><div class="name">Carrefour</div><div class="country">FR</div></div>
+      <div class="super reveal"><div class="flag">🇫🇷</div><div class="name">E.Leclerc</div><div class="country">FR</div></div>
+      <div class="super reveal"><div class="flag">🇫🇷</div><div class="name">Auchan</div><div class="country">FR</div></div>
+      <div class="super reveal"><div class="flag">🇫🇷</div><div class="name">Intermarché</div><div class="country">FR</div></div>
+      <div class="super reveal"><div class="flag">🇪🇸</div><div class="name">Mercadona</div><div class="country">ES</div></div>
+      <div class="super reveal"><div class="flag">🇪🇸</div><div class="name">DIA</div><div class="country">ES</div></div>
+      <div class="super reveal"><div class="flag">🇮🇹</div><div class="name">Esselunga</div><div class="country">IT</div></div>
+      <div class="super reveal"><div class="flag">🇮🇹</div><div class="name">Coop</div><div class="country">IT</div></div>
+      <div class="super reveal"><div class="flag">🇮🇹</div><div class="name">Conad</div><div class="country">IT</div></div>
+      <div class="super reveal"><div class="flag">🇧🇪</div><div class="name">Colruyt</div><div class="country">BE</div></div>
+      <div class="super reveal"><div class="flag">🇧🇪</div><div class="name">Delhaize</div><div class="country">BE</div></div>
+      <div class="super reveal"><div class="flag">🇦🇹</div><div class="name">Spar</div><div class="country">AT</div></div>
+      <div class="super reveal"><div class="flag">🇵🇱</div><div class="name">Biedronka</div><div class="country">PL</div></div>
+      <div class="super reveal"><div class="flag">🇵🇱</div><div class="name">Żabka</div><div class="country">PL</div></div>
+      <div class="super reveal"><div class="flag">🇵🇹</div><div class="name">Pingo Doce</div><div class="country">PT</div></div>
+      <div class="super reveal"><div class="flag">🇵🇹</div><div class="name">Continente</div><div class="country">PT</div></div>
+      <div class="super reveal"><div class="flag">🇪🇺</div><div class="name">Pepco</div><div class="country">EU</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="section-mark">05</div>
+      <div>
+        <div class="section-kicker">Pricing</div>
+        <h2 class="section-title">Simple, honest, <em>European</em>.</h2>
+        <p class="section-lede">Start free. Go Pro when you want unlimited everything. Cancel any time from Google Play.</p>
+      </div>
+    </div>
+
+    <div class="plans reveal">
+      <!-- FREE -->
+      <div class="plan">
+        <div class="plan-header">
+          <div class="plan-name">Free</div>
+          <div class="plan-flag">Always</div>
+        </div>
+        <div class="plan-price"><span class="currency">€</span>0<span class="period">/month</span></div>
+        <p class="plan-desc">For occasional shopping checks and the curious.</p>
+        <ul class="plan-features">
+          <li><span class="mark">✓</span><span>Daily searches</span><span class="qty lim">10/day</span></li>
+          <li><span class="mark">✓</span><span>Results per search</span><span class="qty">20</span></li>
+          <li><span class="mark">✓</span><span>Active price alerts</span><span class="qty lim">3</span></li>
+          <li><span class="mark">✓</span><span>eBay + Awin sources</span><span class="qty">Included</span></li>
+          <li><span class="mark">✓</span><span>27 EU supermarkets</span><span class="qty">Included</span></li>
+          <li><span class="mark no">—</span><span>Price history</span><span class="qty">Pro</span></li>
+          <li><span class="mark no">—</span><span>Deal scoring</span><span class="qty">Pro</span></li>
+          <li><span class="mark no">—</span><span>Unlimited alerts</span><span class="qty">Pro</span></li>
+        </ul>
+        <a href="https://play.google.com/store/apps/details?id=com.marketiq.app" target="_blank" rel="noopener" class="plan-cta">Download free<span class="arrow"></span></a>
+      </div>
+
+      <!-- PRO -->
+      <div class="plan">
+        <div class="plan-header">
+          <div class="plan-name">Pro</div>
+          <div class="plan-flag">Best value</div>
+        </div>
+        <div class="plan-price"><span class="currency">€</span>2.99<span class="period">/month</span></div>
+        <p class="plan-desc">For serious deal hunters — unlimited everything, no asterisks.</p>
+        <ul class="plan-features">
+          <li><span class="mark">✓</span><span>Daily searches</span><span class="qty lim">Unlimited</span></li>
+          <li><span class="mark">✓</span><span>Results per search</span><span class="qty">50</span></li>
+          <li><span class="mark">✓</span><span>Active price alerts</span><span class="qty lim">Unlimited</span></li>
+          <li><span class="mark">✓</span><span>All networks &amp; AliExpress</span><span class="qty">Included</span></li>
+          <li><span class="mark">✓</span><span>27 EU supermarkets</span><span class="qty">Included</span></li>
+          <li><span class="mark">✓</span><span>Full price history</span><span class="qty">Included</span></li>
+          <li><span class="mark">✓</span><span>AI deal scoring</span><span class="qty">Included</span></li>
+          <li><span class="mark">✓</span><span>Priority support</span><span class="qty">Included</span></li>
+        </ul>
+        <a href="https://play.google.com/store/apps/details?id=com.marketiq.app" target="_blank" rel="noopener" class="plan-cta">Start Pro — €2.99<span class="arrow"></span></a>
+      </div>
+    </div>
+
+    <p class="pricing-fine reveal">Pro is billed monthly via Google Play. Cancel any time from your subscriptions. No hidden fees, no upsells inside the app.</p>
+  </div>
+</section>
+
+<!-- TRUST -->
+<section class="trust">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="section-mark">06</div>
+      <div>
+        <div class="section-kicker">Privacy &amp; trust</div>
+        <h2 class="section-title">Built for Europe.<br/><em>GDPR-first</em>, always.</h2>
+        <p class="section-lede">Your data is yours. We hold the minimum needed to make the app work, in Europe, and we don't sell any of it.</p>
+      </div>
+    </div>
+
+    <div class="trust-grid">
+      <div class="trust-row reveal">
+        <div class="roman">I.</div>
+        <div>
+          <h4>EU data servers</h4>
+          <p>All your data is stored in Google Cloud's europe-west1 region. It never leaves Europe.</p>
+        </div>
+      </div>
+      <div class="trust-row reveal">
+        <div class="roman">II.</div>
+        <div>
+          <h4>We don't sell data</h4>
+          <p>Your searches and preferences are never sold to advertisers or any third party. Period.</p>
+        </div>
+      </div>
+      <div class="trust-row reveal">
+        <div class="roman">III.</div>
+        <div>
+          <h4>GDPR compliant</h4>
+          <p>Full consent flow on first launch. Delete your account and all data any time from the app.</p>
+        </div>
+      </div>
+      <div class="trust-row reveal">
+        <div class="roman">IV.</div>
+        <div>
+          <h4>Real, human support</h4>
+          <p>Questions? Write to <a href="mailto:marketiq.app.eu@gmail.com">marketiq.app.eu@gmail.com</a> — a person replies.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSER -->
+<section class="closer">
+  <div class="container-narrow">
+    <h2 class="reveal">Stop leaving money<br/><em>on the table</em>.</h2>
+    <p class="closer-lede reveal" style="transition-delay:.1s">Join thousands of careful EU shoppers comparing prices with Marketiq. Free to download, forever — Pro is a small €2.99 a month.</p>
+    <a href="https://play.google.com/store/apps/details?id=com.marketiq.app" target="_blank" rel="noopener" class="closer-cta reveal" style="transition-delay:.2s">
+      <span class="play"></span>
+      <span>Get it on Google Play</span>
+    </a>
+    <div class="meta reveal" style="transition-delay:.3s">Android · free · €2.99/mo for Pro</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="brand">Marketiq<em>.</em></div>
+        <p>The European price-comparison app that searches eBay, Awin-affiliated stores, and 27 supermarkets — so you always pay the right price.</p>
+        <div class="mail">
+          <a href="mailto:marketiq.app.eu@gmail.com">marketiq.app.eu@gmail.com</a>
+        </div>
+      </div>
+      <div class="foot-col">
+        <h4>App</h4>
+        <ul>
+          <li><a href="#how">How it works</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#supermarkets">Supermarkets</a></li>
+          <li><a href="https://play.google.com/store/apps/details?id=com.marketiq.app" target="_blank" rel="noopener">Download</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="privacy.html">Privacy policy</a></li>
+          <li><a href="terms.html">Terms of service</a></li>
+          <li><a href="mailto:marketiq.app.eu@gmail.com">Contact</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Made in</h4>
+        <ul>
+          <li>Europe · 2026</li>
+          <li>For shoppers, not advertisers.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p>© 2026 Marketiq. All rights reserved.</p>
+      <p class="made">Made with care for EU shoppers — GDPR compliant.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* ── NAV SCROLL STATE ── */
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 24);
+  });
+
+  /* ── MOBILE MENU ── */
+  let menuOpen = false;
+  function toggleMenu() {
+    menuOpen = !menuOpen;
+    document.getElementById('nav-links').classList.toggle('open', menuOpen);
+    document.body.style.overflow = menuOpen ? 'hidden' : '';
+  }
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.addEventListener('click', () => { if (menuOpen) toggleMenu(); });
+  });
+
+  /* ── REVEAL ON SCROLL ── */
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal, .reveal-soft').forEach(el => io.observe(el));
+
+  /* ── COUNTER ANIMATION ── */
+  const co = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      const target = parseInt(el.getAttribute('data-count'), 10);
+      const suffix = el.getAttribute('data-suffix') || '';
+      const duration = 1100;
+      const start = performance.now();
+      function tick(now) {
+        const t = Math.min(1, (now - start) / duration);
+        const eased = 1 - Math.pow(1 - t, 3);
+        const value = Math.round(target * eased);
+        el.textContent = value + suffix;
+        if (t < 1) requestAnimationFrame(tick);
+        else el.textContent = target + suffix;
+      }
+      requestAnimationFrame(tick);
+      co.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('[data-count]').forEach(el => co.observe(el));
+</script>
+</body>
+</html>

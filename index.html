@@ -220,21 +220,21 @@
     }
     .hero-bg-fx .blob {
       position: absolute;
-      width: 70vmax; height: 70vmax;
+      width: 55vmax; height: 55vmax;
       border-radius: 50%;
-      filter: blur(120px);
-      opacity: 0.55;
+      filter: blur(140px);
+      opacity: 0.28;
       will-change: transform;
     }
     .hero-bg-fx .blob.a {
       background: var(--accent);
-      top: -25%; left: -10%;
+      top: -20%; left: -15%;
       animation: float-a 18s ease-in-out infinite;
     }
     .hero-bg-fx .blob.b {
       background: var(--warm);
-      bottom: -35%; right: -15%;
-      opacity: 0.35;
+      bottom: -30%; right: -20%;
+      opacity: 0.14;
       animation: float-b 22s ease-in-out infinite;
     }
     @keyframes float-a {
@@ -251,8 +251,8 @@
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(ellipse at 50% 60%, transparent 30%, rgba(8,9,13,0.6) 80%),
-        linear-gradient(180deg, rgba(8,9,13,0.4), rgba(8,9,13,0.92));
+        radial-gradient(ellipse at 50% 50%, transparent 20%, rgba(8,9,13,0.55) 70%, rgba(8,9,13,0.9) 100%),
+        linear-gradient(180deg, rgba(8,9,13,0.55), rgba(8,9,13,0.96));
     }
 
     .hero-content {
@@ -1426,10 +1426,9 @@
     .trust-row a:hover { opacity: 0.7; }
 
     /* ── CLOSER ── */
-    .closer-wrap { height: 200vh; position: relative; }
+    .closer-wrap { position: relative; }
     .closer {
-      height: 100vh;
-      min-height: 700px;
+      min-height: 90vh;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -1437,7 +1436,7 @@
       text-align: center;
       position: relative;
       overflow: hidden;
-      padding: 80px 36px;
+      padding: 160px 36px;
     }
     .closer::before {
       content: '';
@@ -2547,35 +2546,21 @@
     });
   }
 
-  // ──────── CLOSER — pinned headline grow ────────
-  ScrollTrigger.create({
-    trigger: '#closer-wrap',
-    start: 'top top',
-    end: 'bottom bottom',
-    pin: '#closer',
-    pinSpacing: false
-  });
-
+  // ──────── CLOSER — line draws + headline scales on enter ────────
   gsap.fromTo('#closer-line',
     { scaleY: 0 },
     {
       scaleY: 1, duration: 1.4, ease: 'power3.inOut',
-      scrollTrigger: { trigger: '#closer-wrap', start: 'top 70%' }
+      scrollTrigger: { trigger: '#closer-wrap', start: 'top 75%' }
     }
   );
 
-  // Headline scales from 0.65 to 1 as user scrolls into closer
   gsap.fromTo('#closer-title',
-    { scale: 0.65, opacity: 0.4, letterSpacing: '0em' },
+    { scale: 0.75, opacity: 0, y: 30 },
     {
-      scale: 1, opacity: 1, letterSpacing: '-0.045em',
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: '#closer-wrap',
-        start: 'top 80%',
-        end: 'top 0%',
-        scrub: 0.8
-      }
+      scale: 1, opacity: 1, y: 0,
+      duration: 1.3, ease: 'power3.out',
+      scrollTrigger: { trigger: '#closer-wrap', start: 'top 80%', toggleActions: 'play none none none' }
     }
   );
 

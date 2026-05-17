@@ -682,44 +682,6 @@
       50% { transform: scaleY(0.5); opacity: 0.4; }
     }
 
-    /* ── MARQUEE ── */
-    .marquee-outer {
-      overflow: hidden;
-      padding: 26px 0;
-      border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-      background: var(--bg-deep);
-      position: relative;
-      z-index: 2;
-      -webkit-mask-image: linear-gradient(90deg, transparent, black 7%, black 93%, transparent);
-      mask-image: linear-gradient(90deg, transparent, black 7%, black 93%, transparent);
-    }
-    .marquee-track {
-      display: flex;
-      gap: 64px;
-      width: max-content;
-      will-change: transform;
-      font-family: var(--serif-italic);
-      font-style: italic;
-      font-weight: 400;
-      font-size: 1.4rem;
-      letter-spacing: -0.01em;
-      color: var(--ink);
-    }
-    .marquee-item {
-      display: flex;
-      align-items: center;
-      gap: 22px;
-      white-space: nowrap;
-    }
-    .marquee-item .sep {
-      display: inline-block;
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 10px var(--accent-glow);
-    }
-
     /* ── STATS ── */
     .stats {
       padding: 110px 0 130px;
@@ -1798,40 +1760,6 @@
   </section>
 </div>
 
-<!-- ════════════ MARQUEE ════════════ -->
-<div class="marquee-outer">
-  <div class="marquee-track" id="marquee-track">
-    <div class="marquee-item">eBay Germany <span class="sep"></span></div>
-    <div class="marquee-item">eBay France <span class="sep"></span></div>
-    <div class="marquee-item">eBay Italy <span class="sep"></span></div>
-    <div class="marquee-item">eBay Spain <span class="sep"></span></div>
-    <div class="marquee-item">eBay Netherlands <span class="sep"></span></div>
-    <div class="marquee-item">eBay UK <span class="sep"></span></div>
-    <div class="marquee-item">Awin Network <span class="sep"></span></div>
-    <div class="marquee-item">Lidl <span class="sep"></span></div>
-    <div class="marquee-item">Aldi <span class="sep"></span></div>
-    <div class="marquee-item">Carrefour <span class="sep"></span></div>
-    <div class="marquee-item">Kaufland <span class="sep"></span></div>
-    <div class="marquee-item">Jumbo <span class="sep"></span></div>
-    <div class="marquee-item">Albert Heijn <span class="sep"></span></div>
-    <div class="marquee-item">Mercadona <span class="sep"></span></div>
-    <div class="marquee-item">eBay Germany <span class="sep"></span></div>
-    <div class="marquee-item">eBay France <span class="sep"></span></div>
-    <div class="marquee-item">eBay Italy <span class="sep"></span></div>
-    <div class="marquee-item">eBay Spain <span class="sep"></span></div>
-    <div class="marquee-item">eBay Netherlands <span class="sep"></span></div>
-    <div class="marquee-item">eBay UK <span class="sep"></span></div>
-    <div class="marquee-item">Awin Network <span class="sep"></span></div>
-    <div class="marquee-item">Lidl <span class="sep"></span></div>
-    <div class="marquee-item">Aldi <span class="sep"></span></div>
-    <div class="marquee-item">Carrefour <span class="sep"></span></div>
-    <div class="marquee-item">Kaufland <span class="sep"></span></div>
-    <div class="marquee-item">Jumbo <span class="sep"></span></div>
-    <div class="marquee-item">Albert Heijn <span class="sep"></span></div>
-    <div class="marquee-item">Mercadona <span class="sep"></span></div>
-  </div>
-</div>
-
 <!-- ════════════ STATS ════════════ -->
 <section class="stats">
   <div class="container">
@@ -2432,36 +2360,6 @@
   demoTL.fromTo('.demo-result[data-i="1"]', { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 1 }, 0.25);
   demoTL.fromTo('.demo-result[data-i="2"]', { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 1 }, 0.5);
   demoTL.fromTo('.demo-footer .total', { opacity: 0 }, { opacity: 1, duration: 0.8 }, 0.75);
-
-  // ──────── MARQUEE WITH SCROLL VELOCITY ────────
-  const marqueeTrack = document.getElementById('marquee-track');
-  const baseMarqueeSpeed = -50; // px per frame baseline
-  let marqueeX = 0;
-  let marqueeWidth = marqueeTrack.scrollWidth / 2;
-  let lastScrollY = window.scrollY;
-  let scrollVelocity = 0;
-  let lastTs = performance.now();
-
-  window.addEventListener('scroll', () => {
-    const dy = window.scrollY - lastScrollY;
-    scrollVelocity = dy;
-    lastScrollY = window.scrollY;
-  }, { passive: true });
-
-  function marqueeTick(ts) {
-    const dt = Math.min(50, ts - lastTs) / 16.67;
-    lastTs = ts;
-    const boost = scrollVelocity * 0.8;
-    marqueeX += (baseMarqueeSpeed * dt * 0.6) + boost;
-    scrollVelocity *= 0.85; // decay
-    if (marqueeWidth <= 0) marqueeWidth = marqueeTrack.scrollWidth / 2;
-    if (marqueeX <= -marqueeWidth) marqueeX += marqueeWidth;
-    if (marqueeX > 0) marqueeX -= marqueeWidth;
-    marqueeTrack.style.transform = 'translateX(' + marqueeX + 'px)';
-    requestAnimationFrame(marqueeTick);
-  }
-  requestAnimationFrame(marqueeTick);
-  window.addEventListener('resize', () => { marqueeWidth = marqueeTrack.scrollWidth / 2; });
 
   // ──────── STATS — counter + divider draw ────────
   document.querySelectorAll('.stat:not(:first-child)::before');

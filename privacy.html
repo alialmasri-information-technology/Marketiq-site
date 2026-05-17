@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Privacy Policy — Marketiq</title>
   <meta name="description" content="Marketiq privacy policy. EU-hosted data, no selling of personal data, full GDPR rights." />
-  <meta name="theme-color" content="#FAFAF7" />
+  <meta name="theme-color" content="#08090d" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -15,25 +15,28 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:        #FAFAF7;
-      --chip:      #F1EFE8;
-      --ink:       #15140F;
-      --ink-soft:  #5C5A52;
-      --ink-mute:  #9A968B;
-      --accent:    #1F8A5B;
-      --line:      rgba(20,18,12,0.07);
-      --line-firm: rgba(20,18,12,0.18);
+      --bg:        #08090d;
+      --surface:   #11131a;
+      --ink:       #f4f3ef;
+      --ink-soft:  #9ca0ad;
+      --ink-mute:  #5d626f;
+      --accent:    #B8FF3D;
+      --accent-haze: rgba(184, 255, 61, 0.10);
+      --accent-glow: rgba(184, 255, 61, 0.45);
+      --line:      rgba(255, 255, 255, 0.08);
+      --line-firm: rgba(255, 255, 255, 0.18);
       --serif:     'Fraunces', ui-serif, Georgia, serif;
       --sans:      'Geist', system-ui, -apple-system, sans-serif;
       --mono:      'JetBrains Mono', ui-monospace, Menlo, monospace;
+      --ease:      cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; background: var(--bg); }
     body {
       font-family: var(--sans);
       background: var(--bg);
       color: var(--ink);
-      line-height: 1.65;
+      line-height: 1.7;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
@@ -43,15 +46,19 @@
       inset: 0;
       pointer-events: none;
       z-index: 1;
-      opacity: 0.5;
-      mix-blend-mode: multiply;
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.08, 0 0 0 0 0.08, 0 0 0 0 0.06, 0 0 0 0.045 0'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>");
+      opacity: 0.4;
+      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.9, 0 0 0 0 0.9, 0 0 0 0 0.85, 0 0 0 0.5 0'/></filter><rect width='220' height='220' filter='url(%23n)'/></svg>");
     }
 
-    a { color: var(--accent); text-decoration: none; border-bottom: 1px solid currentColor; transition: opacity .2s; }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid currentColor;
+      transition: opacity .25s var(--ease);
+    }
     a:hover { opacity: 0.7; }
 
-    /* NAV */
     nav.top {
       position: sticky;
       top: 0;
@@ -60,101 +67,114 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: rgba(250,250,247,0.85);
-      backdrop-filter: blur(14px);
+      background: rgba(8, 9, 13, 0.85);
+      backdrop-filter: saturate(140%) blur(20px);
+      -webkit-backdrop-filter: saturate(140%) blur(20px);
       border-bottom: 1px solid var(--line);
     }
     .brand {
       font-family: var(--serif);
       font-weight: 500;
       font-size: 1.4rem;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.025em;
       font-variation-settings: 'opsz' 144;
       color: var(--ink);
     }
     .brand a { color: inherit; text-decoration: none; border: none; }
-    .brand em { font-style: italic; color: var(--accent); font-weight: 400; }
+    .brand em {
+      font-style: italic;
+      color: var(--accent);
+      font-weight: 400;
+      filter: drop-shadow(0 0 8px var(--accent-glow));
+    }
     .back {
-      font-size: 0.84rem;
+      font-size: 0.86rem;
       color: var(--ink-soft);
       font-weight: 500;
       border: none;
       padding-bottom: 2px;
       border-bottom: 1px solid transparent;
-      transition: border-color .2s, color .2s;
+      transition: border-color .25s var(--ease), color .25s var(--ease);
     }
-    .back:hover { color: var(--ink); border-bottom-color: var(--ink); opacity: 1; }
+    .back:hover { color: var(--accent); border-bottom-color: var(--accent); opacity: 1; }
 
-    /* PAGE */
-    main { position: relative; z-index: 2; max-width: 720px; margin: 0 auto; padding: 80px 32px 120px; }
+    main { position: relative; z-index: 2; max-width: 740px; margin: 0 auto; padding: 80px 32px 130px; }
 
     .doc-head {
       display: grid;
       grid-template-columns: 80px 1fr;
-      gap: 28px;
-      margin-bottom: 72px;
+      gap: 32px;
+      margin-bottom: 80px;
       align-items: start;
     }
     .doc-mark {
       font-family: var(--mono);
-      font-size: 0.82rem;
+      font-size: 0.84rem;
       letter-spacing: 0.05em;
       color: var(--ink-mute);
-      padding-top: 14px;
-      border-top: 1px solid var(--ink);
+      padding-top: 16px;
+      border-top: 1px solid var(--accent);
+      box-shadow: 0 -10px 30px var(--accent-haze);
     }
-    .doc-mark::before { content: '§ '; color: var(--accent); }
+    .doc-mark::before { content: '§ '; color: var(--accent); filter: drop-shadow(0 0 6px var(--accent-glow)); }
     .doc-kicker {
-      font-size: 0.74rem;
+      font-size: 0.76rem;
       font-weight: 500;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--ink-soft);
-      margin-bottom: 18px;
+      margin-bottom: 20px;
     }
     h1 {
       font-family: var(--serif);
-      font-weight: 360;
-      font-size: clamp(2.4rem, 5vw, 3.6rem);
-      line-height: 1.05;
-      letter-spacing: -0.035em;
-      margin-bottom: 18px;
+      font-weight: 340;
+      font-size: clamp(2.6rem, 5.2vw, 3.8rem);
+      line-height: 1.04;
+      letter-spacing: -0.04em;
+      margin-bottom: 22px;
       font-variation-settings: 'opsz' 144;
+      color: var(--ink);
     }
-    h1 em { font-style: italic; color: var(--accent); font-weight: 380; }
+    h1 em {
+      font-style: italic;
+      color: var(--accent);
+      font-weight: 360;
+      filter: drop-shadow(0 0 12px var(--accent-glow));
+    }
 
     .updated {
       font-family: var(--mono);
-      font-size: 0.78rem;
+      font-size: 0.8rem;
       letter-spacing: 0.04em;
       color: var(--ink-mute);
     }
 
     h2 {
       font-family: var(--serif);
-      font-weight: 420;
-      font-size: 1.5rem;
-      letter-spacing: -0.02em;
+      font-weight: 400;
+      font-size: 1.55rem;
+      letter-spacing: -0.022em;
       line-height: 1.2;
-      margin: 56px 0 16px;
+      margin: 64px 0 18px;
       color: var(--ink);
     }
     h2::before {
       content: '';
       display: block;
-      width: 28px;
+      width: 32px;
       height: 1px;
       background: var(--accent);
-      margin-bottom: 18px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 8px var(--accent-glow);
     }
 
-    p { font-size: 1rem; color: var(--ink-soft); margin-bottom: 14px; }
+    p { font-size: 1.02rem; color: var(--ink-soft); margin-bottom: 16px; }
     p strong { color: var(--ink); font-weight: 500; }
     ul { list-style: none; margin: 14px 0 14px; padding: 0; }
     ul li {
-      font-size: 0.98rem;
+      font-size: 1rem;
       color: var(--ink-soft);
-      padding: 10px 0 10px 22px;
+      padding: 12px 0 12px 24px;
       border-bottom: 1px solid var(--line);
       position: relative;
     }
@@ -169,26 +189,27 @@
     ul li strong { color: var(--ink); font-weight: 500; }
 
     .contact-card {
-      margin-top: 72px;
-      padding: 32px 28px;
-      background: var(--chip);
+      margin-top: 80px;
+      padding: 36px 32px;
+      background: var(--surface);
       border: 1px solid var(--line-firm);
+      border-left: 3px solid var(--accent);
       border-radius: 4px;
     }
     .contact-card h3 {
       font-family: var(--serif);
-      font-weight: 420;
-      font-size: 1.3rem;
+      font-weight: 400;
+      font-size: 1.35rem;
       letter-spacing: -0.02em;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       color: var(--ink);
     }
-    .contact-card p { margin-bottom: 0; font-size: 0.95rem; }
+    .contact-card p { margin-bottom: 0; font-size: 0.97rem; }
 
     @media (max-width: 600px) {
       nav.top { padding: 14px 22px; }
-      main { padding: 56px 22px 96px; }
-      .doc-head { grid-template-columns: 56px 1fr; gap: 18px; }
+      main { padding: 60px 22px 100px; }
+      .doc-head { grid-template-columns: 56px 1fr; gap: 20px; }
     }
   </style>
 </head>
